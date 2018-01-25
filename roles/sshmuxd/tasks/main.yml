@@ -68,7 +68,7 @@
     group: root
 
 - name: copy sshmuxd systemd unit file
-  file:
+  copy:
     src: sshmuxd.service
     dest: /etc/systemd/system/sshmuxd.service
     owner: root
