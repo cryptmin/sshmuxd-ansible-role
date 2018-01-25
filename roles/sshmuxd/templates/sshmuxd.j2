@@ -1,0 +1,20 @@
+address: ":{{sshmuxd_port}}"
+hostkey: | 
+{{sshmuxd_key['content'] | b64decode|indent(1, True)}}
+users:
+{% for user in users %}
+    - publicKey: "{{user.public_key}}"
+      name: "{{user.name}}"
+
+{% endfor %}
+
+hosts:
+{% for jumphost in jhosts %}
+    - address: '{{jumphost.address}}'
+      users:
+{% for jusers in jumphost.users %}
+        - "{{ jusers }}"
+{% endfor %}
+
+{% endfor %}
+

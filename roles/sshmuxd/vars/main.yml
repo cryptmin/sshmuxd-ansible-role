@@ -1,0 +1,30 @@
+---
+# vars file for sshmux
+sshmuxd_port: '222'
+
+# Define global users and keys
+users:
+    - name: root
+      public_key: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC1bcRgMlI5Lf4ecwtzLneutqh8wbw9vPMRYlwrXYN1wD8LB1G3i/VmhhFE3B5cs/Bz6FG1iOA7p99O5dSkANicEtpqZjA0VeIFNNvY9CM+NO5txzdb9Djq0yUDT/CyBVB16kPg6eZfhhRp1jDWI53t1Bt0/WshQ4IKvAm3jnhj51sYmSZsGTFg6brQnJ195MulOaRPd4/cBc82mB53shYUa7nsvGDJ9ZoBpVH5q+WukQ3RLOk9ZM2tbgDWGKrT37U4gNHpd3obz1jl/ceX7l6RQoyMLI2Wgce34moqdveDBFqL/ANDFCNhmHeN3PqPTFoNIW2T1zE57HjFH3BpwjoL'
+
+    - name: user1
+      public_key: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC1bcRgMlI5Lf4ecwtzLneutqh8wbw9vPMRYlwrXYN1wD8LB1G3i/VmhhFE3B5cs/Bz6FG1iOA7p99O5dSkANicEtpqZjA0VeIFNNvY9CM+NO5txzdb9Djq0yUDT/CyBVB16kPg6eZfhhRp1jDWI53t1Bt0/WshQ4IKvAm3jnhj51sYmSZsGTFg6brQnJ195MulOaRPd4/cBc82mB53shYUa7nsvGDJ9ZoBpVH5q+WukQ3RLOk9ZM2tbgDWGKrT37U4gNHpd3obz1jl/ceX7l6RQoyMLI2Wgce34moqdveDBFqL/ANDFCNhmHeN3PqPTFoNIW2T1zE57HjFH3BpwjoL'
+
+    - name: user2
+      public_key: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC1bcRgMlI5Lf4ecwtzLneutqh8wbw9vPMRYlwrXYN1wD8LB1G3i/VmhhFE3B5cs/Bz6FG1iOA7p99O5dSkANicEtpqZjA0VeIFNNvY9CM+NO5txzdb9Djq0yUDT/CyBVB16kPg6eZfhhRp1jDWI53t1Bt0/WshQ4IKvAm3jnhj51sYmSZsGTFg6brQnJ195MulOaRPd4/cBc82mB53shYUa7nsvGDJ9ZoBpVH5q+WukQ3RLOk9ZM2tbgDWGKrT37U4gNHpd3obz1jl/ceX7l6RQoyMLI2Wgce34moqdveDBFqL/ANDFCNhmHeN3PqPTFoNIW2T1zE57HjFH3BpwjoL'
+
+    - name: user3
+      public_key: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC1bcRgMlI5Lf4ecwtzLneutqh8wbw9vPMRYlwrXYN1wD8LB1G3i/VmhhFE3B5cs/Bz6FG1iOA7p99O5dSkANicEtpqZjA0VeIFNNvY9CM+NO5txzdb9Djq0yUDT/CyBVB16kPg6eZfhhRp1jDWI53t1Bt0/WshQ4IKvAm3jnhj51sYmSZsGTFg6brQnJ195MulOaRPd4/cBc82mB53shYUa7nsvGDJ9ZoBpVH5q+WukQ3RLOk9ZM2tbgDWGKrT37U4gNHpd3obz1jl/ceX7l6RQoyMLI2Wgce34moqdveDBFqL/ANDFCNhmHeN3PqPTFoNIW2T1zE57HjFH3BpwjoL'
+
+# define users to host ACL
+jhosts:
+    - address: ':22'
+      users:
+        - root
+
+    - address: '192.168.1.17:22'
+      users:
+        - root
+        - user1
+        - user2
+        - user3

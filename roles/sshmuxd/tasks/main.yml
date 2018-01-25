@@ -1,0 +1,90 @@
+---
+# tasks file for sshmux
+#
+- name: add jessie backport repo
+  apt_repository:
+    repo: deb http://ftp.debian.org/debian jessie-backports main
+    state: present
+
+- name: Install Dep Packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+    default_release: jessie-backports
+  with_items:
+        - 'git-core'
+        - 'golang'
+
+- name: export golang vars
+  lineinfile: 
+    dest: /etc/profile
+    line: "{{ item }}"
+  with_items:
+        - 'export GOPATH="/usr/lib/go"'
+        - 'export PATH="${PATH}:${GOPATH}/bin"'
+
+- name: Pull sshmux repo
+  git:
+    repo: 'https://github.com/joushou/sshmuxd.git'
+    dest: '/usr/lib/go/src/github.com/joushou/sshmuxd'
+    update: yes
+    recursive: yes
+    force: yes
+
+- name: Go install sshmux
+  shell: go install
+  args:
+    chdir: '/usr/lib/go/src/github.com/joushou/sshmuxd'
+
+- name: Create sshmuxd config dir
+  file:
+    path: /etc/sshmuxd
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+
+
+- name: Check if /etc/sshmuxd/sshmuxd.key exists
+  stat:
+    path: /etc/sshmuxd/sshmuxd.key
+  register: sshmuxdif
+
+- name: Generate ECDSA sshmuxd host key
+  shell: ssh-keygen -q -t ecdsa -f /etc/sshmuxd/sshmuxd.key -N ''
+  when: sshmuxdif.stat.exists == False
+
+- name: Add ECDSA in to ansible register
+  slurp:
+    src: /etc/sshmuxd/sshmuxd.key
+  register: sshmuxd_key
+
+- name: Copy sshmuxd config
+  template: 
+    src: sshmuxd.j2
+    dest: /etc/sshmuxd/sshmuxd.yml
+    owner: root
+    group: root
+
+- name: copy sshmuxd systemd unit file
+  file:
+    src: sshmuxd.service
+    dest: /etc/systemd/system/sshmuxd.service
+    owner: root
+    group: root
+
+- name: enable sshmuxd
+  systemd:
+    name: sshmuxd
+    enabled: yes
+    masked: no
+
+- name: reload systemd
+  systemd: 
+    daemon_reload: yes
+
+- name: start sshmuxd
+  systemd:
+    state: started
+    name: sshmuxd
