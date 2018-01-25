@@ -1,4 +1,4 @@
-Role Name
+sshmux
 =========
 
 A example playbook and role to deploy sshmux to a debian jessie host. 
